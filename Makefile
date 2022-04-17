@@ -1,9 +1,8 @@
 ## This is a simple Makefile
 
 # Define what compiler to use and the flags.
-CC=cc
-CXX=CC
-CCFLAGS= -g -std=c99 -Wall -Werror
+CXX=g++
+CXXFLAGS= -g -std=c++0x -Wall -Werror
 
 
 all: proj2
@@ -12,11 +11,11 @@ all: proj2
 # % matches all (like * in a command)
 # $< is the source file (.c file)
 %.o : %.cpp %.h
-	$(CC) -c $(CCFLAGS) $<
+	$(CXX) -c $(CXXFLAGS) $<
 
 
-proj2:
-	$(CC) -o proj2 -lm
+proj2: proj2.o
+	$(CXX) -o proj2 proj2.o -lm
 
 
 clean:

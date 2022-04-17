@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <string.h>
+#include <list>
 
 using std::string;
 
@@ -15,9 +16,9 @@ int main(int argc, char** argv) {
     }
     strcpy(curr, argv[1]);
     printf("%s\n", curr);
-    int startInstruction = atoi(argv[2]);
-    int instructionCount = atoi(argv[3]); 
-    int pipelineWidth = atoi(argv[4]);
+    // int startInstruction = atoi(argv[2]);
+    // int instructionCount = atoi(argv[3]); 
+    // int pipelineWidth = atoi(argv[4]);
 
     return 0;
 }
