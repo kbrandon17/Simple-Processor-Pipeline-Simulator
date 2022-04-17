@@ -1,0 +1,74 @@
+sim {
+
+flag branchJammed = false
+
+writebackObj.run(memObj)
+memObj.run(exeObj)
+exeObj.run(decodeObj, &branchJammed)
+decodeObj.run(fetchObj)
+fetchObj.run(ins, &branchJammed)
+
+
+instructionCount++
+}
+
+
+Instruction {
+	type of instruction
+	PC #
+	Array of dependencies
+	next pipeline stage
+	pointer to next 
+
+Functions:
+	Get dependency instructions 
+	Create from text input
+}
+
+
+Instruction List {
+	head
+	tail
+
+Functions:
+	add 
+	remove
+}
+
+List of Executed - linked list of PC# of executed instructions {
+	add
+	remove
+	head
+	tail
+}
+
+Executed Instruction {
+	char* PC#
+	pointer to next instruction
+}
+
+WRITEBACK {
+freeing whatever just reached
+increment whatever type it was 
+}
+
+MEM {
+}
+
+EXECUTE {
+}
+
+DECODE {
+
+Function:
+run()
+}
+
+FETCH {
+read instruction from line = instruction count
+Instruction ins = create from text input
+}
+
+
+
+	
