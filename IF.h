@@ -1,4 +1,5 @@
-class IF {
+#include "Stage.h"
+class IF: public Stage {
 
     public:
     IF();

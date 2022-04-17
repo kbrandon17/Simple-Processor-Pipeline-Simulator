@@ -1,4 +1,5 @@
-class ID {
+#include "Stage.h"
+class ID: public Stage {
 
     public:
     ID();

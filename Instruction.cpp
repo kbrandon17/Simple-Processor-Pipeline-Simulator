@@ -1,11 +1,14 @@
 #include <string>
+#include <list>
 
 using std::string;
+using std::list;
 
 class Instruction {
+    int length;
     int type;
     string pc;
-    string dependencies[4];
+    list<string> dependencies;
     string nextStage;
     Instruction* next;
 
@@ -13,5 +16,5 @@ class Instruction {
         return type;
     }
 
-    stri
+    
 };

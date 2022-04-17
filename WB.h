@@ -1,6 +1,7 @@
-class WB {
+#include "Stage.h"
+class WB: public Stage {
 
     public:
-    WB();
+    WB(int);
     void run(MEM);
 };
