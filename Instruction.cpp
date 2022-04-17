@@ -16,5 +16,13 @@ class Instruction {
         return type;
     }
 
+    Instruction(int type, string insPc, list<string> dep) {
+        type = 1;
+        pc = insPc;
+        dependencies = dep;
+        nextStage = 2;
+        next = NULL;
+    }
+
     
 };

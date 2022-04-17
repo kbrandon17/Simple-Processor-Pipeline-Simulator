@@ -11,7 +11,7 @@ void run(){
 
 }
 
-Simulation(){
+Simulation(char* filePath, int startInstruction, int instructionCount, int pipelineWidth){
 branchJammed = false;
 
 }

@@ -5,20 +5,28 @@
 #include <iostream>
 #include <string.h>
 #include <list>
+#include "Simulation.h"
 
 using std::string;
 
 int main(int argc, char** argv) {
-    char curr[18];
+    char filePath[18];
+    
+
     if (argc != 5) {
         printf("Incorrect number of arguments provided. Exiting now!\n");
         exit(1);
     }
-    strcpy(curr, argv[1]);
-    printf("%s\n", curr);
-    // int startInstruction = atoi(argv[2]);
-    // int instructionCount = atoi(argv[3]); 
-    // int pipelineWidth = atoi(argv[4]);
+
+    strcpy(filePath, argv[1]);
+    printf("%s\n", filePath);
+    int startInstruction = atoi(argv[2]);
+    int instructionCount = atoi(argv[3]); 
+    int pipelineWidth = atoi(argv[4]);
+    
+
+
+    Simulation(filePath, startInstruction, instructionCount, pipelineWidth);
 
     return 0;
 }

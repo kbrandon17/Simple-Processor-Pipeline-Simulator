@@ -13,6 +13,6 @@ class Instruction{
     string getNextStage();
     string getPC();
     Instruction* next;
-    Instruction();
+    Instruction(int type, string insPc, list<string> dep);
     
 };
