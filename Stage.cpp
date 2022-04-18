@@ -19,6 +19,9 @@ class Stage {
     }
 
     virtual void run(Stage* stage){
+        while (list->length <= size){
+            list->insert(stage->popReadyIns());
+        }
         return;
         }
 
@@ -31,6 +34,9 @@ class Stage {
         return true;
     }
 
+    Instruction* popReadyIns(){
+        return popReadyIns(NULL);
+    }
     Instruction* popReadyIns(DependencyList* deplist) {
         Instruction* popped = NULL;
         if (deplist != NULL){

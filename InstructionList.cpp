@@ -6,6 +6,8 @@ class InstructionList{
     int length;
 
     void insert(Instruction* ins){
+        if (ins == NULL){return;}
+        length++;
         if (tail == NULL){
             head = ins;
             tail = ins;
@@ -33,6 +35,7 @@ class InstructionList{
             head = curr->next;
         }
         curr->next = NULL;
+        length--;
         return curr;
     }
 
