@@ -3,5 +3,5 @@ class IF: public Stage {
 
     public:
     IF();
-    void run(list<string>, bool*);
+    void run(std::list<string>, bool*);
 };
