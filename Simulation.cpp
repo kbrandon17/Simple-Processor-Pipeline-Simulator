@@ -19,31 +19,29 @@ EX* exObj;
 MEM* memObj;
 WB* wbObj;
 
-void run(){
+void run(char* filePath, int startInstruction, int instructionCount, int pipelineWidth){
+    string line;
+    std::ifstream traceFile(filePath);
+    traceFile.open(filePath);
+    for (int i = 0; i <= startInstruction; i++) {
+    getline(traceFile, line);
+}
     while(insDispatched != insCount){
+        getline(traceFile, line);
         insDispatched += wbObj->run(memObj);
         memObj->run(exObj);
         exObj->run(idObj);
         idObj->run(ifObj);
-        ifObj->run(&branchJammed);
+        ifObj->run(line, &branchJammed);
         cycles++;
     }
 
 }
 
-Simulation(char* filePath, int startInstruction, int instructionCount, int pipelineWidth){
+Simulation(){
 
 branchJammed = false;
-int count;
-string line;
-std::ifstream traceFile(filePath);
-traceFile.open(filePath);
-for (int i = 0; i <= startInstruction; i++) {
-    getline(traceFile, line);
-}
-while(count < instructionCount) {
-    //run everything
-}
+
 }
 
 };
