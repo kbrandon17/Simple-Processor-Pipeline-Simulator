@@ -5,7 +5,7 @@ using std::set;
 using std::stoul;
 
 class DependencyList{
-    int start;
+    long unsigned int start;
     set<string>* dependencyList;
 
     DependencyList(){

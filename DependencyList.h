@@ -7,7 +7,7 @@ class DependencyList{
     private:
     set<string>* dependencyList;
     public:
-    int start;
+    long unsigned int start;
 
     DependencyList(string start2);
 
