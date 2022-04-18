@@ -6,13 +6,13 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <string.h>
 
 
 using std::string;
 using std::list;
 using std::stoul;
 using std::set;
-using std::strcpy;
 
 
 class Instruction {
