@@ -18,5 +18,5 @@ class IF: public Stage {
         }
         Instruction* newInstruction = new Instruction(type, pc, dep);
     }
-    void run();
+    void run(bool* branchJammed);
 };

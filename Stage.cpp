@@ -18,7 +18,7 @@ class Stage {
         list->insert(ins);
     }
 
-    virtual void run(){
+    virtual void run(Stage* stage){
         return;
         }
 
