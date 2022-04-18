@@ -7,6 +7,7 @@
 #include "InstructionList.h"
 #endif
 class EX: public Stage {
+    public:
     InstructionList* queue;
     //1 of each type of ex processor i.e. only one of each instruction type per cycle
     bool type1Done;

@@ -5,6 +5,7 @@ using std::string;
 using std::list;
 
 class Instruction {
+    public:
     int length;
     int type;
     string pc;

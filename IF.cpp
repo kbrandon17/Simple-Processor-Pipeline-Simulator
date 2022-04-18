@@ -8,7 +8,7 @@
 using std::string;
 
 class IF: public Stage {
-
+    public:
     IF(int pipelines) : Stage(pipelines) {
 
     }

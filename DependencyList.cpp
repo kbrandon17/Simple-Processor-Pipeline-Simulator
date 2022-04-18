@@ -5,6 +5,7 @@ using std::set;
 using std::stoul;
 
 class DependencyList{
+    public:
     long unsigned int start;
     set<string>* dependencyList;
 

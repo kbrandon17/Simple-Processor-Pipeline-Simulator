@@ -8,6 +8,7 @@
 #endif
 
 class MEM: public Stage {
+    public:
     InstructionList* queue;
     //1 of each type of ex processor i.e. only one of each instruction type per cycle
     bool type4Done;
