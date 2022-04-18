@@ -185,12 +185,12 @@ class Stage {
         list->insert(ins);
     }
 
-    virtual void run(Stage* stage){
+    /*virtual void run(Stage* stage){
         while (list->length <= size){
             list->insert(stage->popReadyIns());
         }
         return;
-    }
+    }*/
 
 
     Instruction* popReadyIns(){

@@ -17,7 +17,7 @@ class Stage {
     InstructionList* list;
     int size;
     Stage(int);
-    void run(Stage*);
+    //void run(Stage*);
     void addInstruction(Instruction* ins);
     Instruction* popReadyIns(DependencyList* deplist);
     Instruction* popReadyIns();
