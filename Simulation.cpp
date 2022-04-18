@@ -43,7 +43,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         insDispatched += wbObj->run(memObj);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
-        idObj->run(ifObj, deplist);
+        idObj->run(ifObj);
         list<string> listIns;
         tokenize(line, ",", listIns);
         if(cycles == 0) {
@@ -65,12 +65,13 @@ Simulation(int pipelineWidth){
     insDispatched = 0;
     insCount = 0;
     cycles = 0;
-    ifObj = new IF(pipelineWidth);
-    idObj = new ID(pipelineWidth);
-    exObj = new EX(pipelineWidth);
-    memObj = new MEM(pipelineWidth);
-    wbObj = new WB(pipelineWidth);
     deplist = new DependencyList();
+    ifObj = new IF(pipelineWidth);
+    idObj = new ID(pipelineWidth, deplist);
+    exObj = new EX(pipelineWidth, deplist);
+    memObj = new MEM(pipelineWidth, deplist);
+    wbObj = new WB(pipelineWidth);
+    
 }
 
 };

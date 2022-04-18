@@ -5,12 +5,15 @@
 class ID: public Stage {
 
     InstructionList* queue;
-    ID(int pipelines) : Stage(pipelines){
+    DependencyList* deplist;
+
+    ID(int pipelines, DependencyList* ndeplist) : Stage(pipelines){
         queue = new InstructionList();
+        deplist = ndeplist;
     }
 
 
-    void run(Stage* ifObj, DependencyList* depList){
+    void run(Stage* ifObj){
         while ((queue->length + list->length) <= size){
             Instruction* poppedIns = ifObj->popReadyIns();
             if (poppedIns == NULL) {break;}
@@ -18,7 +21,7 @@ class ID: public Stage {
         }
         Instruction* item;
         while(true){
-            item = queue->popReadyIns(depList, size);
+            item = queue->popReadyIns(deplist, size);
             if(item == NULL){break;}
             list->insert(item);
         }

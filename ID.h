@@ -5,6 +5,6 @@
 class ID: public Stage {
 
     public:
-    ID(int);
-    void run(Stage*, DependencyList*);
+    ID(int, DependencyList*);
+    void run(Stage*);
 };

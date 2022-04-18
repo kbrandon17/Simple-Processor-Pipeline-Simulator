@@ -5,6 +5,6 @@
 class MEM: public Stage {
 
     public:
-    MEM(int);
+    MEM(int, DependencyList*);
     void run(EX*);
 };

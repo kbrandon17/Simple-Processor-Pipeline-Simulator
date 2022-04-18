@@ -12,12 +12,15 @@ class EX: public Stage {
     bool type1Done;
     bool type2Done;
     bool type3Done;
+    DependencyList* deplist;
 
-    EX(int pipelines) : Stage(pipelines){
+
+    EX(int pipelines, DependencyList* ndeplist) : Stage(pipelines){
         type1Done = false;
         type2Done = false;
         type3Done = false;
         queue = new InstructionList();
+        deplist = ndeplist;
     }
 
     void clearTypesDone(){

@@ -5,7 +5,7 @@
 class EX: public Stage {
 
     public:
-    EX(int);
+    EX(int, DependencyList*);
     void run(ID*, bool*);
 
 };
