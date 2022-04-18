@@ -6,5 +6,5 @@ class ID: public Stage {
 
     public:
     ID(int);
-    void run(IF*);
+    void run(Stage*, DependencyList*);
 };

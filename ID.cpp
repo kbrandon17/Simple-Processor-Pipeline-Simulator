@@ -6,7 +6,7 @@ class ID: public Stage {
 
     InstructionList* queue;
     ID(int pipelines) : Stage(pipelines){
-
+        queue = new InstructionList();
     }
 
 

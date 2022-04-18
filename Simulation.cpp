@@ -19,6 +19,7 @@ ID* idObj;
 EX* exObj;
 MEM* memObj;
 WB* wbObj;
+DependencyList* deplist;
 
 void tokenize(string s, string del, list<string> newList) {
     int start = 0;
@@ -43,7 +44,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         insDispatched += wbObj->run(memObj);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
-        idObj->run(ifObj);
+        idObj->run(ifObj, deplist);
         list<string> listIns;
         tokenize(line, ",", listIns);
         if(cycles == 0) {
@@ -66,7 +67,7 @@ Simulation(int pipelineWidth){
     exObj = new EX(pipelineWidth);
     memObj = new MEM(pipelineWidth);
     wbObj = new WB(pipelineWidth);
-
+    deplist = new DependencyList();
 }
 
 };

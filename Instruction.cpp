@@ -16,8 +16,8 @@ class Instruction {
         return type;
     }
 
-    Instruction(int type, string insPc, list<string> dep) {
-        type = 1;
+    Instruction(int ntype, string insPc, list<string> dep) {
+        type = ntype;
         pc = insPc;
         dependencies = dep;
         nextStage = 2;

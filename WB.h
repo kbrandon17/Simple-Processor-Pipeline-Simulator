@@ -6,5 +6,5 @@ class WB: public Stage {
 
     public:
     WB(int);
-    int run(MEM*);
+    int run(Stage*);
 };

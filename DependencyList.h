@@ -9,7 +9,7 @@ class DependencyList{
     public:
     int start;
 
-    DependencyList(string start2);
+    DependencyList();
 
     void add(string dependency);
     

@@ -12,7 +12,11 @@ class MEM: public Stage {
     //1 of each type of ex processor i.e. only one of each instruction type per cycle
     bool type4Done;
     bool type5Done;
-    MEM(int pipelines) : Stage(pipelines){}
+    MEM(int pipelines) : Stage(pipelines){
+        type4Done = false;
+        type5Done = false;
+        queue = new InstructionList();
+    }
     void clearTypesDone(){
         type4Done = false;
         type5Done = false;

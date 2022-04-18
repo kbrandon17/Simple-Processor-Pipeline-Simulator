@@ -12,7 +12,14 @@ class EX: public Stage {
     bool type1Done;
     bool type2Done;
     bool type3Done;
-    EX(int pipelines) : Stage(pipelines){}
+
+    EX(int pipelines) : Stage(pipelines){
+        type1Done = false;
+        type2Done = false;
+        type3Done = false;
+        queue = new InstructionList();
+    }
+
     void clearTypesDone(){
         type1Done = false;
         type2Done = false;

@@ -14,6 +14,12 @@ class InstructionList{
     Instruction* tail;
     int length;
 
+    InstructionList(){
+        head = NULL;
+        tail = NULL;
+        length = 0;
+    }
+
     void insert(Instruction* ins){
         if (ins == NULL){return;}
         length++;
