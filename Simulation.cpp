@@ -6,6 +6,7 @@
 #include <fstream>
 
 using std::string;
+using std::list;
 
 class Simulation {
 string startIns;
@@ -18,6 +19,17 @@ ID* idObj;
 EX* exObj;
 MEM* memObj;
 WB* wbObj;
+
+void tokenize(string s, string del, list<string> newList) {
+    int start = 0;
+    int end = s.find(del);
+    while (end != -1) {
+        newList.push_back(s.substr(start, end - start));
+        start = end + del.size();
+        end = s.find(del, start);
+    }
+    newList.push_back(s.substr(start, end - start));
+}
 
 void run(char* filePath, int startInstruction, int instructionCount, int pipelineWidth){
     string line;
@@ -32,7 +44,9 @@ void run(char* filePath, int startInstruction, int instructionCount, int pipelin
         memObj->run(exObj);
         exObj->run(idObj);
         idObj->run(ifObj);
-        ifObj->run(line, &branchJammed);
+        list<string> listIns;
+        tokenize(line, ",", listIns);
+        ifObj->run(listIns, &branchJammed);
         cycles++;
     }
 

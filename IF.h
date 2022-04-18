@@ -3,5 +3,5 @@ class IF: public Stage {
 
     public:
     IF();
-    void run(string, bool*);
+    void run(list<string>, bool*);
 };
