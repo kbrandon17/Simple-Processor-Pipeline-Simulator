@@ -6,7 +6,7 @@ using std::string;
 
 class IF: public Stage {
 
-    IF(std::list<string> ins) {
+    IF(int pipelines) : Stage(pipelines) {
 
     }
 

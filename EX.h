@@ -2,7 +2,7 @@
 class EX: public Stage {
 
     public:
-    EX();
+    EX(int);
     void run(ID*, bool*);
-    
+
 };

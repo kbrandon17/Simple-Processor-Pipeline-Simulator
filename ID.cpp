@@ -2,7 +2,7 @@
 class ID: public Stage {
 
     InstructionList* queue;
-    ID(){
+    ID(int pipelines) : Stage(pipelines){
 
     }
 

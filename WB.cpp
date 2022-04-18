@@ -1,8 +1,8 @@
 #include "Stage.h"
-class WB: public Stage {
+class WB : public Stage {
 
 
-    WB(int){}
+    WB(int pipelines) : Stage(pipelines){}
     int run(Stage* stage){
         int dispatched = 0;
         while (list->length <= size){

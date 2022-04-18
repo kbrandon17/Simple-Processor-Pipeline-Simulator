@@ -37,9 +37,9 @@ int main(int argc, char** argv) {
     int instructionCount = atoi(argv[3]); 
     int pipelineWidth = atoi(argv[4]);
     
-    Simulation* sim;
+    Simulation* sim = new Simulation(pipelineWidth);
 
-    sim->run(filePath, startInstruction, instructionCount, pipelineWidth);
+    sim->run(filePath, startInstruction, instructionCount);
 
     return 0;
 }

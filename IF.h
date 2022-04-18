@@ -2,6 +2,6 @@
 class IF: public Stage {
 
     public:
-    IF();
+    IF(int);
     void run(std::list<string>, bool*);
 };

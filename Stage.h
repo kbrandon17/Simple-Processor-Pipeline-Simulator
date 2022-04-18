@@ -7,7 +7,7 @@ class Stage {
     public:
     InstructionList* list;
     int size;
-    Stage();
+    Stage(int);
     Instruction* popReadyIns();
     void run();
     void addInstruction(Instruction* ins);

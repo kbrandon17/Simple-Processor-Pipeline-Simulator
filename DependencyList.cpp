@@ -2,14 +2,19 @@
 #include <set>
 using std::string;
 using std::set;
+using std::stoul;
 
 class DependencyList{
-    string start;
+    int start;
     set<string>* dependencyList;
 
-    DependencyList(string start2){
-        start=start2;
+    DependencyList(){
         dependencyList = new set<string>;
+        start = 0;
+    }
+
+    void setStart (string startStr){
+        start = stoul("0x" + startStr, nullptr, 16);
     }
 
     void add(string dependency){

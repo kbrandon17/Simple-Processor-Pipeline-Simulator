@@ -2,6 +2,6 @@
 class ID: public Stage {
 
     public:
-    ID();
+    ID(int);
     void run(IF*);
 };

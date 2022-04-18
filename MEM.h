@@ -2,6 +2,6 @@
 class MEM: public Stage {
 
     public:
-    MEM();
+    MEM(int);
     void run(EX*);
 };

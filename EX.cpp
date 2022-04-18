@@ -6,7 +6,7 @@ class EX: public Stage {
     bool type1Done;
     bool type2Done;
     bool type3Done;
-    EX(){}
+    EX(int pipelines) : Stage(pipelines){}
     void clearTypesDone(){
         type1Done = false;
         type2Done = false;

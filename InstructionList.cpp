@@ -1,6 +1,8 @@
 #include "Instruction.h"
 #include "DependencyList.h"
 
+using std::stoul;
+
 class InstructionList{
     Instruction* head;
     Instruction* tail;
@@ -42,8 +44,12 @@ class InstructionList{
 
     bool checkDependency(Instruction* ins, DependencyList* deplist){
         for(const auto& dep : ins->dependencies){
-            if (deplist->search(dep) == 0){
-                return false;
+            string hexins = "0x" + dep;
+            string hexstart = "0x" + deplist->start;
+            if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
+                if (deplist->search(dep) == 0){
+                    return false;
+                }
             }
         }
         return true;

@@ -31,7 +31,7 @@ void tokenize(string s, string del, list<string> newList) {
     newList.push_back(s.substr(start, end - start));
 }
 
-void run(char* filePath, int startInstruction, int instructionCount, int pipelineWidth){
+void run(char* filePath, int startInstruction, int instructionCount){
     string line;
     std::ifstream traceFile(filePath);
     traceFile.open(filePath);
@@ -55,18 +55,17 @@ void run(char* filePath, int startInstruction, int instructionCount, int pipelin
 
 }
 
-Simulation(){
+Simulation(int pipelineWidth){
 
-    string startIns;
-    bool branchJammed = false;
-    int insDispatched = 0;
-    int insCount = 0;
-    int cycles = 0;
-    IF* ifObj;
-    ID* idObj;
-    EX* exObj;
-    MEM* memObj;
-    WB* wbObj;
+    branchJammed = false;
+    insDispatched = 0;
+    insCount = 0;
+    cycles = 0;
+    ifObj = new IF(pipelineWidth);
+    idObj = new ID(pipelineWidth);
+    exObj = new EX(pipelineWidth);
+    memObj = new MEM(pipelineWidth);
+    wbObj = new WB(pipelineWidth);
 
 }
 
