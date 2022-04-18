@@ -1,7 +1,15 @@
+#ifndef InsList
+#define InsList
 #include "InstructionList.h"
+#endif
+#ifndef DepList
+#define DepList
 #include "DependencyList.h"
+#endif
+#ifndef Ins
+#define Ins
 #include "Instruction.h"
-#include "list"
+#endif
 
 class Stage {
     InstructionList* list;

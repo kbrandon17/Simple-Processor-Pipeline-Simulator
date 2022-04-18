@@ -14,8 +14,8 @@ all: proj2
 	$(CXX) -c $(CXXFLAGS) $<
 
 
-proj2: IF.o Simulation.o proj2.o
-	$(CXX) -o proj2 IF.o Simulation.o proj2.o -lm
+proj2: Instruction.o DependencyList.o InstructionList.o WB.o MEM.o EX.o ID.o IF.o Simulation.o Stage.o proj2.o
+	$(CXX) -o proj2 Instruction.o DependencyList.o InstructionList.o WB.o MEM.o EX.o ID.o IF.o Simulation.o Stage.o proj2.o -lm
 
 
 clean:

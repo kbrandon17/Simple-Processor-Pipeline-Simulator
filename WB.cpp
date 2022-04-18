@@ -1,5 +1,9 @@
+#ifndef Stageh
+#define Stageh
 #include "Stage.h"
-class WB : public Stage {
+#endif
+
+class WB: public Stage {
 
 
     WB(int pipelines) : Stage(pipelines){}
