@@ -6,11 +6,11 @@ using std::string;
 
 class IF: public Stage {
 
-    IF(list<string> ins) {
+    IF(std::list<string> ins) {
 
     }
 
-    void run(list<string> ins, bool* branchJammed) {
+    void run(std::list<string> ins, bool* branchJammed) {
         string pc = ins.front();
         ins.pop_front();
         int type = stoi(ins.front());
@@ -18,11 +18,14 @@ class IF: public Stage {
             *branchJammed = true;
         }
         ins.pop_front();
-        list<string> dep;
+        std::list<string> dep;
         while (!ins.empty()) {
             dep.push_back(ins.front());
             ins.pop_front();
         }
         Instruction* newInstruction = new Instruction(type, pc, dep);
+        while(list->length <= size) {
+            addInstruction(newInstruction);
+        }   
     }
 };
