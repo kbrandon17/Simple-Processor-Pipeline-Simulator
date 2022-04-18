@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "g++-8 - Build and debug active file",
+            "name": "g++ - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/mnt/b/Coding Apps/CMPT 305 Queue Sim/project2/proj2",
+            "program": "${workspaceFolder}/proj2",
             "args": ["compute_int_0", "1", "1000000", "1"],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",
@@ -27,7 +27,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: gcc-8 build active file",
+            "preLaunchTask": "C/C++: g++ build active file",
             "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
