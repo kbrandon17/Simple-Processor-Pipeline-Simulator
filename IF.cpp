@@ -7,9 +7,16 @@ using std::string;
 class IF: public Stage {
 
     IF(list<string> ins) {
+
+    }
+
+    void run(list<string> ins, bool* branchJammed) {
         string pc = ins.front();
         ins.pop_front();
         int type = stoi(ins.front());
+        if(type == 3) {
+            *branchJammed = true;
+        }
         ins.pop_front();
         list<string> dep;
         while (!ins.empty()) {
@@ -18,5 +25,4 @@ class IF: public Stage {
         }
         Instruction* newInstruction = new Instruction(type, pc, dep);
     }
-    void run(bool* branchJammed);
 };

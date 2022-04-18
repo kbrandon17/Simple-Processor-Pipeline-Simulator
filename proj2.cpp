@@ -10,7 +10,7 @@
 using std::string;
 
 int main(int argc, char** argv) {
-    char filePath[18];
+    char filePath[30];
     
 
     if (argc != 5) {
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     }
 
     strcpy(filePath, argv[1]);
-    printf("%s\n", filePath);
+    strcat(filePath, ".txt");
     int startInstruction = atoi(argv[2]);
     int instructionCount = atoi(argv[3]); 
     int pipelineWidth = atoi(argv[4]);
