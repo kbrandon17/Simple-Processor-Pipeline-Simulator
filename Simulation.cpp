@@ -42,7 +42,7 @@ void run(char* filePath, int startInstruction, int instructionCount, int pipelin
         getline(traceFile, line);
         insDispatched += wbObj->run(memObj);
         memObj->run(exObj);
-        exObj->run(idObj);
+        exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
         list<string> listIns;
         tokenize(line, ",", listIns);

@@ -23,7 +23,7 @@ class Stage {
             list->insert(stage->popReadyIns());
         }
         return;
-        }
+    }
 
 
     Instruction* popReadyIns(){

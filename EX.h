@@ -3,5 +3,6 @@ class EX: public Stage {
 
     public:
     EX();
-    bool run(ID*);
+    void run(ID*, bool*);
+    
 };
