@@ -6,5 +6,6 @@ class MEM: public Stage {
 
     public:
     MEM(int, DependencyList*);
-    void run(EX*);
+    void run(Stage*);
+    void clearTypesDone();
 };

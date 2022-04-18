@@ -9,9 +9,9 @@ class Instruction{
 
     list<string> dependencies;
     int getType();
-    string getDependencies();
-    string getNextStage();
-    string getPC();
+    //string getDependencies();
+    //string getNextStage();
+    //string getPC();
     Instruction* next;
     Instruction(int type, string insPc, list<string> dep);
     

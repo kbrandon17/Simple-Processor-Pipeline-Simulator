@@ -13,18 +13,14 @@ class InstructionList{
     Instruction* tail;
     int length;
 
+    InstructionList();
     void insert(Instruction* ins);
-
     Instruction* pop(int index);
-
-    Instruction* getHead();
-
-    Instruction* getTail();
-    Instruction* setHead(Instruction* head2);
-    
-    Instruction* setTail(Instruction* tail2);
-    Instruction* popReadyIns(DependencyList* deplist, int size);
     bool checkDependency(Instruction* ins, DependencyList* deplist);
-
+    Instruction* popReadyIns(DependencyList* deplist, int size);
+    Instruction* getHead();
+    Instruction* getTail();
+    void setHead(Instruction* head2);
+    void setTail(Instruction* tail2);
 
 };

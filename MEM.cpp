@@ -26,7 +26,7 @@ class MEM: public Stage {
         return;
     }
 
-    void run(Stage* id, bool* jammed){
+    void run(Stage* id){
         clearTypesDone();
         while (queue->length + list->length <= size){
             Instruction* poppedIns = id->popReadyIns();

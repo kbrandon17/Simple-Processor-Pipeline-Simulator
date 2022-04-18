@@ -18,8 +18,8 @@ class Stage {
     int size;
     Stage(int);
     Instruction* popReadyIns();
-    void run();
+    void run(Stage*);
     void addInstruction(Instruction* ins);
-    bool checkDependency(Instruction* ins, DependencyList* deplist);
     Instruction* popReadyIns(DependencyList* deplist);
+    Instruction* popReadyIns();
 };
