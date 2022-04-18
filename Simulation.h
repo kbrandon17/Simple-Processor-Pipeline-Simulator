@@ -1,3 +1,4 @@
+using std::string;
 class Simulation {
 public:
 bool branchJammed;
