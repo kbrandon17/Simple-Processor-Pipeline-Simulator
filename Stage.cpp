@@ -25,14 +25,6 @@ class Stage {
         return;
         }
 
-    bool checkDependency(Instruction* ins, DependencyList* deplist){
-        for(const auto& dep : ins->dependencies){
-            if (deplist->search(dep) == 0){
-                return false;
-            }
-        }
-        return true;
-    }
 
     Instruction* popReadyIns(){
         return popReadyIns(NULL);
