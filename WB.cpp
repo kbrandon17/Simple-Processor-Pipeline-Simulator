@@ -1,4 +1,8 @@
+#ifndef Stageh
+#define Stageh
 #include "Stage.h"
+#endif
+
 class WB: public Stage {
 
 

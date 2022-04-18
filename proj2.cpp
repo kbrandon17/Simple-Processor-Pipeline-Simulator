@@ -5,7 +5,10 @@
 #include <iostream>
 #include <string.h>
 #include <list>
+#ifndef Sim
+#define Sim
 #include "Simulation.h"
+#endif
 
 using std::string;
 

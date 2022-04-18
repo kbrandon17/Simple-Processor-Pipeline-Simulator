@@ -1,4 +1,11 @@
+#ifndef Ins
+#define Ins
 #include "Instruction.h"
+#endif
+#ifndef DepList
+#define DepList
+#include "DependencyList.h"
+#endif
 
 class InstructionList{
     public:

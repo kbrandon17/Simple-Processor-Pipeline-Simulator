@@ -1,5 +1,11 @@
+#ifndef Ins
+#define Ins
 #include "Instruction.h"
+#endif
+#ifndef DepList
+#define DepList
 #include "DependencyList.h"
+#endif
 
 class InstructionList{
     Instruction* head;
@@ -86,11 +92,11 @@ class InstructionList{
         return tail;
     }
 
-    Instruction* setHead(Instruction* head2){
+    void setHead(Instruction* head2){
         head = head2;
     }
     
-    Instruction* setTail(Instruction* tail2){
+    void setTail(Instruction* tail2){
         tail = tail2;
     }
 

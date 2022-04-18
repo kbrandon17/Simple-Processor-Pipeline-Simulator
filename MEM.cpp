@@ -1,5 +1,12 @@
+#ifndef Stageh
+#define Stageh
 #include "Stage.h"
+#endif
+#ifndef InsList
+#define InsList
 #include "InstructionList.h"
+#endif
+
 class MEM: public Stage {
     InstructionList* queue;
     //1 of each type of ex processor i.e. only one of each instruction type per cycle

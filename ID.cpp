@@ -1,4 +1,7 @@
+#ifndef Stageh
+#define Stageh
 #include "Stage.h"
+#endif
 class ID: public Stage {
 
     InstructionList* queue;
