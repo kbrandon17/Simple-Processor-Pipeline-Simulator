@@ -14,8 +14,8 @@ all: proj2
 	$(CXX) -c $(CXXFLAGS) $<
 
 
-proj2: Simulation.o proj2.o
-	$(CXX) -o proj2 Simulation.o proj2.o -lm
+proj2: IF.o Simulation.o proj2.o
+	$(CXX) -o proj2 IF.o Simulation.o proj2.o -lm
 
 
 clean:

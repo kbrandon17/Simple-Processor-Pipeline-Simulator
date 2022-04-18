@@ -46,6 +46,9 @@ void run(char* filePath, int startInstruction, int instructionCount, int pipelin
         idObj->run(ifObj);
         list<string> listIns;
         tokenize(line, ",", listIns);
+        if(cycles == 0) {
+            startIns = listIns.front();
+        }
         ifObj->run(listIns, &branchJammed);
         cycles++;
     }
@@ -54,7 +57,16 @@ void run(char* filePath, int startInstruction, int instructionCount, int pipelin
 
 Simulation(){
 
-branchJammed = false;
+    string startIns;
+    bool branchJammed = false;
+    int insDispatched = 0;
+    int insCount = 0;
+    int cycles = 0;
+    IF* ifObj;
+    ID* idObj;
+    EX* exObj;
+    MEM* memObj;
+    WB* wbObj;
 
 }
 
