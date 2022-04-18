@@ -1,4 +1,5 @@
 #include "Instruction.h"
+#include "DependencyList.h"
 
 class InstructionList{
     Instruction* head;
@@ -37,6 +38,40 @@ class InstructionList{
         curr->next = NULL;
         length--;
         return curr;
+    }
+
+    bool checkDependency(Instruction* ins, DependencyList* deplist){
+        for(const auto& dep : ins->dependencies){
+            if (deplist->search(dep) == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    Instruction* popReadyIns(DependencyList* deplist, int size) {
+        Instruction* popped = NULL;
+        if (deplist != NULL){
+            bool result = false;
+            Instruction* curr = NULL;
+            int i;
+            for(i=0; i<size; i++){
+                if(i=0){
+                    curr = getHead();
+                } else {
+                    curr = curr->next;
+                }
+                result = checkDependency(curr, deplist);
+                if(result == true) {
+                    popped = pop(i);
+                }
+            }
+
+        } else {
+            popped = pop(0);
+        }
+
+        return popped;
     }
 
     Instruction* getHead(){

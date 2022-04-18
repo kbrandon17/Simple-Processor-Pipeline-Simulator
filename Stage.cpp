@@ -38,28 +38,8 @@ class Stage {
         return popReadyIns(NULL);
     }
     Instruction* popReadyIns(DependencyList* deplist) {
-        Instruction* popped = NULL;
-        if (deplist != NULL){
-            bool result = false;
-            Instruction* curr = NULL;
-            int i;
-            for(i=0; i<size; i++){
-                if(i=0){
-                    curr = list->getHead();
-                } else {
-                    curr = curr->next;
-                }
-                result = checkDependency(curr, deplist);
-                if(result == true) {
-                    popped = list->pop(i);
-                }
-            }
-
-        } else {
-            popped = list->pop(0);
-        }
-
-        return popped;
+        return list->popReadyIns(deplist, size);
+    }
 
 
 
@@ -70,5 +50,4 @@ class Stage {
         if (next == NULL) {list->setTail(NULL);}
         curr->next = NULL;
         return curr;*/
-    };
 };
