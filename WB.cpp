@@ -6,7 +6,9 @@ class WB: public Stage {
     int run(Stage* stage){
         int dispatched = 0;
         while (list->length <= size){
-            list->insert(stage->popReadyIns());
+            Instruction* poppedIns = stage->popReadyIns();
+            if (poppedIns == NULL) {break;}
+            list->insert(poppedIns);
         }
         while (Instruction* ins = popReadyIns()){
             if (ins == NULL){break;}

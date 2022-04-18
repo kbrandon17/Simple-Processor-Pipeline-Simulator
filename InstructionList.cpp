@@ -51,8 +51,12 @@ class InstructionList{
 
     Instruction* popReadyIns(DependencyList* deplist, int size) {
         Instruction* popped = NULL;
-        if (deplist != NULL){
-            bool result = false;
+        if (deplist != NULL && getHead() != NULL){
+            bool result = checkDependency(getHead(), deplist);
+            if (result){
+                popped = pop(0);
+            }
+            /*bool result = false;
             Instruction* curr = NULL;
             int i;
             for(i=0; i<size; i++){
@@ -65,7 +69,7 @@ class InstructionList{
                 if(result == true) {
                     popped = pop(i);
                 }
-            }
+            }*/
 
         } else {
             popped = pop(0);

@@ -17,10 +17,14 @@ class EX: public Stage {
     void run(Stage* id, bool* jammed){
         clearTypesDone();
         while (queue->length + list->length <= size){
-            queue->insert(id->popReadyIns());
+            Instruction* poppedIns = id->popReadyIns();
+            if (poppedIns == NULL) {break;}
+            queue->insert(poppedIns);
         }
         while(true){
-            int type = queue->getHead()->getType();
+            Instruction* head = queue->getHead();
+            if(head == NULL){break;}
+            int type = head->getType();
             if(type == 1 && type1Done == false){
                 list->insert(queue->pop(0));
                 type1Done = true;

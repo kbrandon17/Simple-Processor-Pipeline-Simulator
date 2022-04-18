@@ -9,7 +9,9 @@ class ID: public Stage {
 
     void run(Stage* ifObj, DependencyList* depList){
         while ((queue->length + list->length) <= size){
-            queue->insert(ifObj->popReadyIns());
+            Instruction* poppedIns = ifObj->popReadyIns();
+            if (poppedIns == NULL) {break;}
+            queue->insert(poppedIns);
         }
         Instruction* item;
         while(true){
