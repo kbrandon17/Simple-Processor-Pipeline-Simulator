@@ -11,6 +11,8 @@ class DependencyList{
 
     DependencyList();
 
+    void setStart (string startStr);
+
     void add(string dependency);
     
     int search(string dependency);

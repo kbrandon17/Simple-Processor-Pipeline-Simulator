@@ -40,7 +40,6 @@ void run(char* filePath, int startInstruction, int instructionCount){
     getline(traceFile, line);
 }
     while(insDispatched != insCount){
-        getline(traceFile, line);
         insDispatched += wbObj->run(memObj);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
@@ -48,9 +47,13 @@ void run(char* filePath, int startInstruction, int instructionCount){
         list<string> listIns;
         tokenize(line, ",", listIns);
         if(cycles == 0) {
-            startIns = listIns.front();
+            deplist->setStart(listIns.front());
         }
-        ifObj->run(listIns, &branchJammed);
+        if(branchJammed == false) {
+            getline(traceFile, line);
+            ifObj->run(listIns, &branchJammed);
+        }
+        
         cycles++;
     }
 
