@@ -12,6 +12,7 @@
 #endif
 
 class Stage {
+    public:
     InstructionList* list;
     int size;
 
@@ -37,6 +38,7 @@ class Stage {
     Instruction* popReadyIns(){
         return popReadyIns(NULL);
     }
+
     Instruction* popReadyIns(DependencyList* deplist) {
         return list->popReadyIns(deplist, size);
     }

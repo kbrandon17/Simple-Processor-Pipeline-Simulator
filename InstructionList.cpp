@@ -10,6 +10,7 @@
 using std::stoul;
 
 class InstructionList{
+    public:
     Instruction* head;
     Instruction* tail;
     int length;

@@ -4,9 +4,10 @@ using std::string;
 using std::set;
 
 class DependencyList{
-    private:
-    set<string>* dependencyList;
     public:
+    //private:
+    set<string>* dependencyList;
+    //public:
     long unsigned int start;
 
     DependencyList();

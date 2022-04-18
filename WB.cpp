@@ -4,8 +4,7 @@
 #endif
 
 class WB: public Stage {
-
-
+    public:
     WB(int pipelines) : Stage(pipelines){}
     int run(Stage* stage){
         int dispatched = 0;

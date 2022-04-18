@@ -9,6 +9,7 @@ using std::string;
 using std::list;
 
 class Simulation {
+public:
 string startIns;
 bool branchJammed;
 int insDispatched;
