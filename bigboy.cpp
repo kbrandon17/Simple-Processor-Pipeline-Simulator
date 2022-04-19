@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
+#include <algorithm>
 
 
 using std::string;
@@ -185,12 +186,12 @@ class Stage {
         list->insert(ins);
     }
 
-    /*virtual void run(Stage* stage){
-        while (list->length <= size){
-            list->insert(stage->popReadyIns());
-        }
-        return;
-    }*/
+    // virtual void run(Stage* stage){
+    //     while (list->length <= size){
+    //         list->insert(stage->popReadyIns());
+    //     }
+    //     return;
+    // }
 
 
     Instruction* popReadyIns(){
@@ -400,7 +401,8 @@ MEM* memObj;
 WB* wbObj;
 DependencyList* deplist;
 
-void tokenize(string s, string del, list<string> newList) {
+list<string> tokenize(string s, string del) {
+    list<string> newList;
     int start = 0;
     int end = s.find(del);
     while (end != -1) {
@@ -409,16 +411,26 @@ void tokenize(string s, string del, list<string> newList) {
         end = s.find(del, start);
     }
     newList.push_back(s.substr(start, end - start));
+    return newList;
 }
 
 void run(char* filePath, int startInstruction, int instructionCount){
-    string line;
-    std::ifstream traceFile(filePath);
-    traceFile.open(filePath);
-    for (int i = 0; i <= startInstruction; i++) {
-    getline(traceFile, line);
+    printf("WE MADE IT");
+    FILE* fp = fopen(filePath, "r");
+    if(fp == NULL) {
+        printf("Incorrect file name given!");
+        exit(1);
+        }
+    char* line;
+    size_t len = 0;
+
+    for (int i = 1; i < startInstruction; i++) {
+        getline(&line, &len, fp);
 }
+    insCount = instructionCount;
     list<string> listIns;
+    
+    printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
     while(insDispatched != insCount){
         insDispatched += wbObj->run(memObj);
         memObj->run(exObj);
@@ -426,8 +438,10 @@ void run(char* filePath, int startInstruction, int instructionCount){
         idObj->run(ifObj);
 
         if(branchJammed == false) {
-            getline(traceFile, line);
-            tokenize(line, ",", listIns);
+            getline(&line, &len, fp);
+            string strline(line);
+            strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
+            listIns = tokenize(strline, ",");
             ifObj->run(listIns, &branchJammed);
         }
         if(cycles == 0) {
@@ -435,6 +449,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         }
         
         cycles++;
+        printf("%d\n", cycles);
     }
 
 }
@@ -480,13 +495,12 @@ int main(int argc, char** argv) {
     }
 
     strcpy(filePath, argv[1]);
-    strcat(filePath, ".txt");
     int startInstruction = atoi(argv[2]);
     int instructionCount = atoi(argv[3]); 
     int pipelineWidth = atoi(argv[4]);
-    
+    printf("PRESIM");
     Simulation* sim = new Simulation(pipelineWidth);
-
+    printf("SIM MADE");
     sim->run(filePath, startInstruction, instructionCount);
 
     return 0;
