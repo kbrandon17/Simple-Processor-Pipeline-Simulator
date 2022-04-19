@@ -51,6 +51,10 @@ class DependencyList{
         start = 0;
     }
 
+    ~DependencyList(){
+        delete dependencyList;
+    }
+
     void setStart (string startStr){
         start = stoul("0x" + startStr, nullptr, 16);
     }
@@ -75,6 +79,15 @@ class InstructionList{
         head = NULL;
         tail = NULL;
         length = 0;
+    }
+    ~InstructionList(){
+        Instruction* cur = head;
+        Instruction* next = NULL;
+        for (int i=0; i<length; i++){
+            next = cur->next;
+            delete cur;
+            cur = next;
+        }
     }
 
     void insert(Instruction* ins){
@@ -115,10 +128,10 @@ class InstructionList{
         for(const auto& dep : ins->dependencies){
             string hexins = "0x" + dep;
            // if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
-               printf("\ndependency list is: \n");
+                /*printf("\ndependency list is: \n");
                print(deplist->dependencyList);
                printf("\ndependency is: \n");
-               printf("%s", dep.c_str());
+               printf("%s", dep.c_str());*/
                 if (deplist->search(dep) == 1){
                     return false;
                 }
@@ -228,6 +241,10 @@ class Stage {
        size = pipelines;
     }
 
+    ~Stage(){
+        delete list;
+    }
+
     void addInstruction(Instruction* ins){
         list->insert(ins);
     }
@@ -296,6 +313,11 @@ class MEM: public Stage {
         queue = new InstructionList();
         deplist = ndeplist;
     }
+
+    ~MEM(){
+        delete queue;
+    }
+
     void clearTypesDone(){
         type4Done = false;
         type5Done = false;
@@ -372,6 +394,9 @@ class ID: public Stage {
         queue = new InstructionList();
         deplist = ndeplist;
     }
+    ~ID(){
+        delete queue;
+    }
 
 
     void run(Stage* ifObj){
@@ -408,6 +433,10 @@ class EX: public Stage {
         queue = new InstructionList();
         deplist = ndeplist;
         depchecklist = ndepchecklist;
+    }
+
+    ~EX(){
+        delete queue;
     }
 
     void clearTypesDone(){
@@ -489,7 +518,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         printf("Incorrect file name given!");
         exit(1);
         }
-    char* line;
+    char* line = NULL;
     size_t len = 0;
 
     for (int i = 1; i < startInstruction; i++) {
@@ -508,7 +537,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         deplist->dependencyList->insert(tempdeplist->dependencyList->begin(), tempdeplist->dependencyList->end());
         tempdeplist->dependencyList->clear();
         insDispatched += wbObj->run(memObj);
-        printf("insDispatched: %d\n", insDispatched);
+        //printf("insDispatched: %d\n", insDispatched);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
@@ -517,6 +546,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
             lastPC = "";
         }*/
         if(branchJammed == 3 && ifObj->list->length < ifObj->size) {
+            //line = NULL;
             getline(&line, &len, fp);
             string strline(line);
             strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
@@ -531,9 +561,11 @@ void run(char* filePath, int startInstruction, int instructionCount){
         if(cycles == 0) {
             deplist->setStart(listIns.front());
         }
-        printf("\n%d\n", cycles);
+        //printf("\n%d\n", cycles);
         cycles++;
     }
+    free(line);
+    fclose(fp);
     printf("\n\n\n\n~~~~~~~~FINAL STATS~~~~~~~~\n\nFinished %d instructions in %d cycles\n\n\nType Breakdown:\n\nInteger instructions: %d\nFloating point instructions: %d\nBranches: %d\nLoads: %d\nStores: %d\n", insDispatched, cycles, stats->type1, stats->type2, stats->type3, stats->type4, stats->type5);
 
 }
@@ -553,6 +585,16 @@ Simulation(int pipelineWidth){
     memObj = new MEM(pipelineWidth, tempdeplist);
     wbObj = new WB(pipelineWidth, stats);
     
+}
+~Simulation(){
+    delete stats;
+    delete tempdeplist;
+    delete deplist;
+    delete ifObj;
+    delete idObj;
+    delete exObj;
+    delete memObj;
+    delete wbObj;
 }
 
 };
@@ -586,6 +628,6 @@ int main(int argc, char** argv) {
     int pipelineWidth = atoi(argv[4]);
     Simulation* sim = new Simulation(pipelineWidth);
     sim->run(filePath, startInstruction, instructionCount);
-
+    delete sim;
     return 0;
 }
