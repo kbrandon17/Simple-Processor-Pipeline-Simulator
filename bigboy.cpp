@@ -271,9 +271,11 @@ class MEM: public Stage {
             if(head == NULL){break;}
             int type = head->getType();
             if(type == 4 && type4Done == false){
+                deplist->add(head->pc);
                 list->insert(queue->pop(0));
                 type4Done = true;
             } else if (type == 5 && type5Done == false){
+                deplist->add(head->pc);
                 list->insert(queue->pop(0));
                 type5Done = true;
             } else if (type == 1 || type == 2 || type == 3){
@@ -375,12 +377,15 @@ class EX: public Stage {
             if(head == NULL){break;}
             int type = head->getType();
             if(type == 1 && type1Done == false){
+                deplist->add(head->pc);
                 list->insert(queue->pop(0));
                 type1Done = true;
             } else if (type == 2 && type2Done == false){
+                deplist->add(head->pc);
                 list->insert(queue->pop(0));
                 type2Done = true;
             } else if (type == 3 && type3Done == false){
+                deplist->add(head->pc);
                 list->insert(queue->pop(0));
                 type3Done = true;
                 *jammed = false;
