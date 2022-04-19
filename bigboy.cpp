@@ -386,7 +386,6 @@ class ID: public Stage {
             item = ifObj->popReadyIns();
             if(item == NULL){break;}
             list->insert(item);
-            deplist->add(item->pc);
         }
     }
 };
@@ -423,6 +422,7 @@ class EX: public Stage {
         while (queue->length + list->length < size){
             Instruction* poppedIns = id->popReadyIns(depchecklist);
             if (poppedIns == NULL) {break;}
+            depchecklist->add(poppedIns->pc);
             queue->insert(poppedIns);
         }
         while(true){
