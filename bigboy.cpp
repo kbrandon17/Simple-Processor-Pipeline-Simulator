@@ -412,6 +412,7 @@ EX* exObj;
 MEM* memObj;
 WB* wbObj;
 DependencyList* deplist;
+DependencyList* tempdeplist;
 
 list<string> tokenize(string s, string del) {
     list<string> newList;
@@ -444,6 +445,8 @@ void run(char* filePath, int startInstruction, int instructionCount){
     
     printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
     while(insDispatched < insCount){
+        deplist->dependencyList->insert(tempdeplist->dependencyList->begin(), tempdeplist->dependencyList->end());
+        tempdeplist->dependencyList->clear();
         insDispatched += wbObj->run(memObj);
         printf("insDispatched: %d\n", insDispatched);
         memObj->run(exObj);
@@ -476,11 +479,12 @@ Simulation(int pipelineWidth){
     insDispatched = 0;
     insCount = 0;
     cycles = 0;
+    tempdeplist = new DependencyList();
     deplist = new DependencyList();
     ifObj = new IF(pipelineWidth);
-    idObj = new ID(pipelineWidth, deplist);
-    exObj = new EX(pipelineWidth, deplist);
-    memObj = new MEM(pipelineWidth, deplist);
+    idObj = new ID(pipelineWidth, tempdeplist);
+    exObj = new EX(pipelineWidth, tempdeplist);
+    memObj = new MEM(pipelineWidth, tempdeplist);
     wbObj = new WB(pipelineWidth);
     
 }
