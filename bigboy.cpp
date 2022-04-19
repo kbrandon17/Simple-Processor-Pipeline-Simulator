@@ -114,11 +114,11 @@ class InstructionList{
     bool checkDependency(Instruction* ins, DependencyList* deplist){
         for(const auto& dep : ins->dependencies){
             string hexins = "0x" + dep;
-            if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
+           // if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
                 if (deplist->search(dep) == 0){
                     return false;
                 }
-            }
+         //   }
         }
         return true;
     }
@@ -132,7 +132,7 @@ class InstructionList{
     Instruction* popReadyIns(DependencyList* deplist, int size) {
         Instruction* popped = NULL;
         if (deplist != NULL && getHead() != NULL){
-    //        print(deplist->dependencyList);
+            //print(deplist->dependencyList);
             bool result = checkDependency(getHead(), deplist);
             if (result){
                 popped = pop(0);
@@ -290,12 +290,16 @@ class MEM: public Stage {
 
 class IF: public Stage {
     public:
-    IF(int pipelines) : Stage(pipelines) {
-
+    DependencyList* deplist;
+    IF(int pipelines, DependencyList* Ndeplist) : Stage(pipelines) {
+        deplist = Ndeplist;
     }
 
     void run(std::list<string> ins, int* branchJammed) {
         string pc = ins.front();
+        if(deplist->search(pc) == 1) {
+            deplist->dependencyList->erase(pc);
+        }
         ins.pop_front();
         int type = stoi(ins.front());
         if(type == 3) {
@@ -428,7 +432,6 @@ list<string> tokenize(string s, string del) {
 }
 
 void run(char* filePath, int startInstruction, int instructionCount){
-    printf("WE MADE IT");
     FILE* fp = fopen(filePath, "r");
     if(fp == NULL) {
         printf("Incorrect file name given!");
@@ -481,8 +484,8 @@ Simulation(int pipelineWidth){
     cycles = 0;
     tempdeplist = new DependencyList();
     deplist = new DependencyList();
-    ifObj = new IF(pipelineWidth);
-    idObj = new ID(pipelineWidth, tempdeplist);
+    ifObj = new IF(pipelineWidth, deplist);
+    idObj = new ID(pipelineWidth, deplist);
     exObj = new EX(pipelineWidth, tempdeplist);
     memObj = new MEM(pipelineWidth, tempdeplist);
     wbObj = new WB(pipelineWidth);
@@ -518,9 +521,7 @@ int main(int argc, char** argv) {
     int startInstruction = atoi(argv[2]);
     int instructionCount = atoi(argv[3]); 
     int pipelineWidth = atoi(argv[4]);
-    printf("PRESIM");
     Simulation* sim = new Simulation(pipelineWidth);
-    printf("SIM MADE");
     sim->run(filePath, startInstruction, instructionCount);
 
     return 0;
