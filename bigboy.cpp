@@ -336,15 +336,15 @@ class ID: public Stage {
 
 
     void run(Stage* ifObj){
-        while ((queue->length + list->length) < size){
+        /*while ((queue->length + list->length) < size){
             Instruction* poppedIns = ifObj->popReadyIns();
             if (poppedIns == NULL) {break;}
             queue->insert(poppedIns);
-        }
+        }*/
         Instruction* item;
-        while(true){
+        while((queue->length + list->length) < size){
             //item = queue->popReadyIns(deplist, size);
-            item = queue->popReadyIns(NULL, size);
+            item = ifObj->popReadyIns();
             if(item == NULL){break;}
             list->insert(item);
             deplist->add(item->pc);
