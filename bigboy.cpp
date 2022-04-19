@@ -113,7 +113,6 @@ class InstructionList{
     bool checkDependency(Instruction* ins, DependencyList* deplist){
         for(const auto& dep : ins->dependencies){
             string hexins = "0x" + dep;
-            string hexstart = "0x" + deplist->start;
             if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
                 if (deplist->search(dep) == 0){
                     return false;
@@ -299,7 +298,7 @@ class IF: public Stage {
             ins.pop_front();
         }
         Instruction* newInstruction = new Instruction(type, pc, dep);
-        while(list->length <= size) {
+        if(list->length <= size) {
             addInstruction(newInstruction);
         }   
     }
@@ -431,8 +430,9 @@ void run(char* filePath, int startInstruction, int instructionCount){
     list<string> listIns;
     
     printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
-    while(insDispatched != insCount){
+    while(insDispatched <= insCount){
         insDispatched += wbObj->run(memObj);
+        printf("insDispatched: %d\n", insDispatched);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
@@ -449,7 +449,6 @@ void run(char* filePath, int startInstruction, int instructionCount){
         }
         
         cycles++;
-        printf("%d\n", cycles);
     }
 
 }
