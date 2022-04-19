@@ -8,6 +8,7 @@
 #include <vector>
 #include <string.h>
 #include <algorithm>
+#include <iterator>
 
 
 using std::string;
@@ -121,10 +122,17 @@ class InstructionList{
         }
         return true;
     }
+    void print(std::set<string> const *s)
+{
+    std::copy(s->begin(),
+            s->end(),
+            std::ostream_iterator<string>(std::cout, " "));
+}
 
     Instruction* popReadyIns(DependencyList* deplist, int size) {
         Instruction* popped = NULL;
         if (deplist != NULL && getHead() != NULL){
+            print(deplist->dependencyList);
             bool result = checkDependency(getHead(), deplist);
             if (result){
                 popped = pop(0);
@@ -437,7 +445,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
 
-        if(branchJammed == false) {
+        if(branchJammed == false && ifObj->list->length < ifObj->size) {
             getline(&line, &len, fp);
             string strline(line);
             strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
