@@ -295,11 +295,9 @@ class IF: public Stage {
         deplist = Ndeplist;
     }
 
-    void run(std::list<string> ins, int* branchJammed) {
+    string run(std::list<string> ins, int* branchJammed) {
         string pc = ins.front();
-        if(deplist->search(pc) == 1) {
-            deplist->dependencyList->erase(pc);
-        }
+
         ins.pop_front();
         int type = stoi(ins.front());
         if(type == 3) {
@@ -314,7 +312,11 @@ class IF: public Stage {
         Instruction* newInstruction = new Instruction(type, pc, dep);
         if(list->length < size) {
             addInstruction(newInstruction);
-        }   
+        }
+        if(deplist->search(pc) == 0) {
+            pc = "";
+        }
+        return pc;   
     }
 };
 
@@ -445,7 +447,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
 }
     insCount = instructionCount;
     list<string> listIns;
-    
+    string lastPC;
     printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
     while(insDispatched < insCount){
         deplist->dependencyList->insert(tempdeplist->dependencyList->begin(), tempdeplist->dependencyList->end());
@@ -455,13 +457,16 @@ void run(char* filePath, int startInstruction, int instructionCount){
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
-
+        if(!lastPC.empty()) {
+            deplist->dependencyList->erase(lastPC);
+            lastPC = "";
+        }
         if(branchJammed == 3 && ifObj->list->length < ifObj->size) {
             getline(&line, &len, fp);
             string strline(line);
             strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
             listIns = tokenize(strline, ",");
-            ifObj->run(listIns, &branchJammed);
+            lastPC = ifObj->run(listIns, &branchJammed);
         }
         if (branchJammed == 2) {
             branchJammed = 3;
