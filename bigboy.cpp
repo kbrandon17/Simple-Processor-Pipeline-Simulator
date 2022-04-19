@@ -115,7 +115,11 @@ class InstructionList{
         for(const auto& dep : ins->dependencies){
             string hexins = "0x" + dep;
            // if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
-                if (deplist->search(dep) == 0){
+               printf("\ndependency list is: \n");
+               print(deplist->dependencyList);
+               printf("\ndependency is: \n");
+               printf("%s", dep.c_str());
+                if (deplist->search(dep) == 1){
                     return false;
                 }
          //   }
@@ -313,9 +317,9 @@ class IF: public Stage {
         if(list->length < size) {
             addInstruction(newInstruction);
         }
-        if(deplist->search(pc) == 0) {
+        /*if(deplist->search(pc) == 0) {
             pc = "";
-        }
+        }*/
         return pc;   
     }
 };
@@ -339,9 +343,11 @@ class ID: public Stage {
         }
         Instruction* item;
         while(true){
-            item = queue->popReadyIns(deplist, size);
+            //item = queue->popReadyIns(deplist, size);
+            item = queue->popReadyIns(NULL, size);
             if(item == NULL){break;}
             list->insert(item);
+            deplist->add(item->pc);
         }
     }
 };
@@ -354,14 +360,16 @@ class EX: public Stage {
     bool type2Done;
     bool type3Done;
     DependencyList* deplist;
+    DependencyList* depchecklist;
 
 
-    EX(int pipelines, DependencyList* ndeplist) : Stage(pipelines){
+    EX(int pipelines, DependencyList* ndeplist, DependencyList* ndepchecklist) : Stage(pipelines){
         type1Done = false;
         type2Done = false;
         type3Done = false;
         queue = new InstructionList();
         deplist = ndeplist;
+        depchecklist = ndepchecklist;
     }
 
     void clearTypesDone(){
@@ -374,7 +382,7 @@ class EX: public Stage {
     void run(Stage* id, int* jammed){
         clearTypesDone();
         while (queue->length + list->length < size){
-            Instruction* poppedIns = id->popReadyIns();
+            Instruction* poppedIns = id->popReadyIns(depchecklist);
             if (poppedIns == NULL) {break;}
             queue->insert(poppedIns);
         }
@@ -450,6 +458,11 @@ void run(char* filePath, int startInstruction, int instructionCount){
     string lastPC;
     printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
     while(insDispatched < insCount){
+        int deplistsize = tempdeplist->dependencyList->size();
+        for(int i=0; i < deplistsize; i++){
+            deplist->dependencyList->erase(*(tempdeplist->dependencyList->begin()));
+            tempdeplist->dependencyList->erase(tempdeplist->dependencyList->begin());
+        }
         deplist->dependencyList->insert(tempdeplist->dependencyList->begin(), tempdeplist->dependencyList->end());
         tempdeplist->dependencyList->clear();
         insDispatched += wbObj->run(memObj);
@@ -457,16 +470,17 @@ void run(char* filePath, int startInstruction, int instructionCount){
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
-        if(!lastPC.empty()) {
+        /*if(!lastPC.empty()) {
             deplist->dependencyList->erase(lastPC);
             lastPC = "";
-        }
+        }*/
         if(branchJammed == 3 && ifObj->list->length < ifObj->size) {
             getline(&line, &len, fp);
             string strline(line);
             strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
             listIns = tokenize(strline, ",");
-            lastPC = ifObj->run(listIns, &branchJammed);
+            string test = ifObj->run(listIns, &branchJammed);
+            //deplist->add(test);
         }
         if (branchJammed == 2) {
             branchJammed = 3;
@@ -475,7 +489,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         if(cycles == 0) {
             deplist->setStart(listIns.front());
         }
-        printf("%d\n", cycles);
+        printf("\n%d\n", cycles);
         cycles++;
     }
 
@@ -491,7 +505,7 @@ Simulation(int pipelineWidth){
     deplist = new DependencyList();
     ifObj = new IF(pipelineWidth, deplist);
     idObj = new ID(pipelineWidth, deplist);
-    exObj = new EX(pipelineWidth, tempdeplist);
+    exObj = new EX(pipelineWidth, tempdeplist, deplist);
     memObj = new MEM(pipelineWidth, tempdeplist);
     wbObj = new WB(pipelineWidth);
     
