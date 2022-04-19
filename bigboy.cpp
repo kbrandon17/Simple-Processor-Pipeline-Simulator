@@ -181,6 +181,41 @@ class InstructionList{
 
 };
 
+class Stats {
+    public:
+    int type1;
+    int type2;
+    int type3;
+    int type4;
+    int type5;
+    Stats(){
+        type1 = 0;
+        type2 = 0;
+        type3 = 0;
+        type4 = 0;
+        type5 = 0;
+    }
+    void addToCount(int type){
+        switch(type){
+            case 1:
+                type1++;
+                break;
+            case 2:
+                type2++;
+                break;
+            case 3:
+                type3++;
+                break;
+            case 4:
+                type4++;
+                break;
+            case 5:
+                type5++;
+                break;
+        }
+    }
+};
+
 class Stage {
     public:
     InstructionList* list;
@@ -226,7 +261,10 @@ class Stage {
 
 class WB: public Stage {
     public:
-    WB(int pipelines) : Stage(pipelines){}
+    Stats* stats;
+    WB(int pipelines, Stats* nstats) : Stage(pipelines){
+        stats = nstats;
+    }
     int run(Stage* stage){
         int dispatched = 0;
         while (list->length < size){
@@ -236,6 +274,7 @@ class WB: public Stage {
         }
         while (Instruction* ins = popReadyIns()){
             if (ins == NULL){break;}
+            stats->addToCount(ins->getType());
             delete ins;
             dispatched++;
         }
@@ -413,8 +452,11 @@ class EX: public Stage {
 
 };
 
+
+
 class Simulation {
     public:
+Stats* stats;
 string startIns;
 int branchJammed;
 int insDispatched;
@@ -492,6 +534,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
         printf("\n%d\n", cycles);
         cycles++;
     }
+    printf("\n\n\n\n~~~~~~~~FINAL STATS~~~~~~~~\n\nFinished %d instructions in %d cycles\n\n\nType Breakdown:\n\nInteger instructions: %d\nFloating point instructions: %d\nBranches: %d\nLoads: %d\nStores: %d\n", insDispatched, cycles, stats->type1, stats->type2, stats->type3, stats->type4, stats->type5);
 
 }
 
@@ -501,13 +544,14 @@ Simulation(int pipelineWidth){
     insDispatched = 0;
     insCount = 0;
     cycles = 0;
+    stats = new Stats();
     tempdeplist = new DependencyList();
     deplist = new DependencyList();
     ifObj = new IF(pipelineWidth, deplist);
     idObj = new ID(pipelineWidth, deplist);
     exObj = new EX(pipelineWidth, tempdeplist, deplist);
     memObj = new MEM(pipelineWidth, tempdeplist);
-    wbObj = new WB(pipelineWidth);
+    wbObj = new WB(pipelineWidth, stats);
     
 }
 
