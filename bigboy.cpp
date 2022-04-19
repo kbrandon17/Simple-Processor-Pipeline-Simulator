@@ -132,7 +132,7 @@ class InstructionList{
     Instruction* popReadyIns(DependencyList* deplist, int size) {
         Instruction* popped = NULL;
         if (deplist != NULL && getHead() != NULL){
-            print(deplist->dependencyList);
+    //        print(deplist->dependencyList);
             bool result = checkDependency(getHead(), deplist);
             if (result){
                 popped = pop(0);
@@ -225,7 +225,7 @@ class WB: public Stage {
     WB(int pipelines) : Stage(pipelines){}
     int run(Stage* stage){
         int dispatched = 0;
-        while (list->length <= size){
+        while (list->length < size){
             Instruction* poppedIns = stage->popReadyIns();
             if (poppedIns == NULL) {break;}
             list->insert(poppedIns);
@@ -261,7 +261,7 @@ class MEM: public Stage {
 
     void run(Stage* id){
         clearTypesDone();
-        while (queue->length + list->length <= size){
+        while (queue->length + list->length < size){
             Instruction* poppedIns = id->popReadyIns();
             if (poppedIns == NULL) {break;}
             queue->insert(poppedIns);
@@ -294,12 +294,12 @@ class IF: public Stage {
 
     }
 
-    void run(std::list<string> ins, bool* branchJammed) {
+    void run(std::list<string> ins, int* branchJammed) {
         string pc = ins.front();
         ins.pop_front();
         int type = stoi(ins.front());
         if(type == 3) {
-            *branchJammed = true;
+            *branchJammed = 1;
         }
         ins.pop_front();
         std::list<string> dep;
@@ -308,7 +308,7 @@ class IF: public Stage {
             ins.pop_front();
         }
         Instruction* newInstruction = new Instruction(type, pc, dep);
-        if(list->length <= size) {
+        if(list->length < size) {
             addInstruction(newInstruction);
         }   
     }
@@ -326,7 +326,7 @@ class ID: public Stage {
 
 
     void run(Stage* ifObj){
-        while ((queue->length + list->length) <= size){
+        while ((queue->length + list->length) < size){
             Instruction* poppedIns = ifObj->popReadyIns();
             if (poppedIns == NULL) {break;}
             queue->insert(poppedIns);
@@ -365,9 +365,9 @@ class EX: public Stage {
         return;
     }
 
-    void run(Stage* id, bool* jammed){
+    void run(Stage* id, int* jammed){
         clearTypesDone();
-        while (queue->length + list->length <= size){
+        while (queue->length + list->length < size){
             Instruction* poppedIns = id->popReadyIns();
             if (poppedIns == NULL) {break;}
             queue->insert(poppedIns);
@@ -388,7 +388,7 @@ class EX: public Stage {
                 deplist->add(head->pc);
                 list->insert(queue->pop(0));
                 type3Done = true;
-                *jammed = false;
+                *jammed = 2;
             } else if (type == 4 || type == 5){
                 list->insert(queue->pop(0));
             } else {
@@ -402,7 +402,7 @@ class EX: public Stage {
 class Simulation {
     public:
 string startIns;
-bool branchJammed;
+int branchJammed;
 int insDispatched;
 int insCount;
 int cycles;
@@ -443,24 +443,28 @@ void run(char* filePath, int startInstruction, int instructionCount){
     list<string> listIns;
     
     printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
-    while(insDispatched <= insCount){
+    while(insDispatched < insCount){
         insDispatched += wbObj->run(memObj);
         printf("insDispatched: %d\n", insDispatched);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
 
-        if(branchJammed == false && ifObj->list->length < ifObj->size) {
+        if(branchJammed == 3 && ifObj->list->length < ifObj->size) {
             getline(&line, &len, fp);
             string strline(line);
             strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
             listIns = tokenize(strline, ",");
             ifObj->run(listIns, &branchJammed);
         }
+        if (branchJammed == 2) {
+            branchJammed = 3;
+        }
+        
         if(cycles == 0) {
             deplist->setStart(listIns.front());
         }
-        
+        printf("%d\n", cycles);
         cycles++;
     }
 
@@ -468,7 +472,7 @@ void run(char* filePath, int startInstruction, int instructionCount){
 
 Simulation(int pipelineWidth){
 
-    branchJammed = false;
+    branchJammed = 3;
     insDispatched = 0;
     insCount = 0;
     cycles = 0;
