@@ -16,7 +16,7 @@ using std::list;
 using std::stoul;
 using std::set;
 
-
+//class to track each instruction passing through pipeline
 class Instruction {
     public:
     int length;
@@ -41,6 +41,7 @@ class Instruction {
     
 };
 
+//list to show the dependencies currently within the pipeline that havent been fulfilled
 class DependencyList{
     public:
     long unsigned int start;
@@ -69,6 +70,7 @@ class DependencyList{
 
 };
 
+//list of instructions at each stage
 class InstructionList{
     public:
     Instruction* head;
@@ -123,19 +125,13 @@ class InstructionList{
         length--;
         return curr;
     }
-
+//function to check the dependencies of an instruction and whether they are met
     bool checkDependency(Instruction* ins, DependencyList* deplist){
         for(const auto& dep : ins->dependencies){
             string hexins = "0x" + dep;
-           // if (stoul("0x" + dep, nullptr, 16) >= deplist->start){
-                /*printf("\ndependency list is: \n");
-               print(deplist->dependencyList);
-               printf("\ndependency is: \n");
-               printf("%s", dep.c_str());*/
                 if (deplist->search(dep) == 1){
                     return false;
                 }
-         //   }
         }
         return true;
     }
@@ -145,30 +141,14 @@ class InstructionList{
             s->end(),
             std::ostream_iterator<string>(std::cout, " "));
 }
-
+//pop the instructions that are ready to move and transport to the next stage
     Instruction* popReadyIns(DependencyList* deplist, int size) {
         Instruction* popped = NULL;
         if (deplist != NULL && getHead() != NULL){
-            //print(deplist->dependencyList);
             bool result = checkDependency(getHead(), deplist);
             if (result){
                 popped = pop(0);
             }
-            /*bool result = false;
-            Instruction* curr = NULL;
-            int i;
-            for(i=0; i<size; i++){
-                if(i=0){
-                    curr = getHead();
-                } else {
-                    curr = curr->next;
-                }
-                result = checkDependency(curr, deplist);
-                if(result == true) {
-                    popped = pop(i);
-                }
-            }*/
-
         } else {
             popped = pop(0);
         }
@@ -193,6 +173,8 @@ class InstructionList{
     }
 
 };
+
+//class to track the stats to print at the end
 
 class Stats {
     public:
@@ -229,6 +211,8 @@ class Stats {
     }
 };
 
+//base class to track the instructions at each list (actual stage classes implement this)
+
 class Stage {
     public:
     InstructionList* list;
@@ -249,14 +233,6 @@ class Stage {
         list->insert(ins);
     }
 
-    // virtual void run(Stage* stage){
-    //     while (list->length <= size){
-    //         list->insert(stage->popReadyIns());
-    //     }
-    //     return;
-    // }
-
-
     Instruction* popReadyIns(){
         return popReadyIns(NULL);
     }
@@ -265,16 +241,9 @@ class Stage {
         return list->popReadyIns(deplist, size);
     }
 
-
-
-/*        Instruction* curr = list->getHead();
-        if(curr == NULL) {return NULL;}
-        Instruction* next = curr->next;
-        list->setHead(next);
-        if (next == NULL) {list->setTail(NULL);}
-        curr->next = NULL;
-        return curr;*/
 };
+
+//write back class to house the run function for writeback
 
 class WB: public Stage {
     public:
@@ -298,6 +267,8 @@ class WB: public Stage {
         return dispatched;
     }
 };
+
+//memory class to track the run for memory stage
 
 class MEM: public Stage {
     public:
@@ -353,6 +324,8 @@ class MEM: public Stage {
 
 };
 
+//class to run instruction fetches and enter the pipeline
+
 class IF: public Stage {
     public:
     DependencyList* deplist;
@@ -378,12 +351,11 @@ class IF: public Stage {
         if(list->length < size) {
             addInstruction(newInstruction);
         }
-        /*if(deplist->search(pc) == 0) {
-            pc = "";
-        }*/
         return pc;   
     }
 };
+
+//class to run the decode of the instructions
 
 class ID: public Stage {
     public:
@@ -400,20 +372,17 @@ class ID: public Stage {
 
 
     void run(Stage* ifObj){
-        /*while ((queue->length + list->length) < size){
-            Instruction* poppedIns = ifObj->popReadyIns();
-            if (poppedIns == NULL) {break;}
-            queue->insert(poppedIns);
-        }*/
+
         Instruction* item;
         while((queue->length + list->length) < size){
-            //item = queue->popReadyIns(deplist, size);
             item = ifObj->popReadyIns();
             if(item == NULL){break;}
             list->insert(item);
         }
     }
 };
+
+//class to execute the instruction
 
 class EX: public Stage {
     public:
@@ -481,7 +450,7 @@ class EX: public Stage {
 
 };
 
-
+//main simulation function used to facilitate the simulation
 
 class Simulation {
     public:
@@ -527,7 +496,6 @@ void run(char* filePath, int startInstruction, int instructionCount){
     insCount = instructionCount;
     list<string> listIns;
     string lastPC;
-    printf("insDispatched: %d\ninsCount: %d\n", insDispatched, insCount);
     while(insDispatched < insCount){
         int deplistsize = tempdeplist->dependencyList->size();
         for(int i=0; i < deplistsize; i++){
@@ -537,22 +505,15 @@ void run(char* filePath, int startInstruction, int instructionCount){
         deplist->dependencyList->insert(tempdeplist->dependencyList->begin(), tempdeplist->dependencyList->end());
         tempdeplist->dependencyList->clear();
         insDispatched += wbObj->run(memObj);
-        //printf("insDispatched: %d\n", insDispatched);
         memObj->run(exObj);
         exObj->run(idObj, &branchJammed);
         idObj->run(ifObj);
-        /*if(!lastPC.empty()) {
-            deplist->dependencyList->erase(lastPC);
-            lastPC = "";
-        }*/
         if(branchJammed == 3 && ifObj->list->length < ifObj->size) {
-            //line = NULL;
             getline(&line, &len, fp);
             string strline(line);
             strline.erase(std::remove(strline.begin(), strline.end(), '\n'), strline.end());
             listIns = tokenize(strline, ",");
             string test = ifObj->run(listIns, &branchJammed);
-            //deplist->add(test);
         }
         if (branchJammed == 2) {
             branchJammed = 3;
@@ -561,12 +522,11 @@ void run(char* filePath, int startInstruction, int instructionCount){
         if(cycles == 0) {
             deplist->setStart(listIns.front());
         }
-        //printf("\n%d\n", cycles);
         cycles++;
     }
     free(line);
     fclose(fp);
-    printf("\n\n\n\n~~~~~~~~FINAL STATS~~~~~~~~\n\nFinished %d instructions in %d cycles\n\n\nType Breakdown:\n\nInteger instructions: %d\nFloating point instructions: %d\nBranches: %d\nLoads: %d\nStores: %d\n", insDispatched, cycles, stats->type1, stats->type2, stats->type3, stats->type4, stats->type5);
+    printf("~~~~~~~~FINAL STATS~~~~~~~~\n\nFinished %d instructions in %d cycles\n\nType Breakdown:\n\nInteger instructions: %d\nFloating point instructions: %d\nBranches: %d\nLoads: %d\nStores: %d\n", insDispatched, cycles, stats->type1, stats->type2, stats->type3, stats->type4, stats->type5);
 
 }
 
