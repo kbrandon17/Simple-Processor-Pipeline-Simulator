@@ -2,5 +2,5 @@
 
 # Define what compiler to use and the flags.
 
-all: bigboy.cpp
-	g++ -g -Wall -o bigboy bigboy.cpp
+all: proj2.cpp
+	g++ -g -Wall -o proj2 proj2.cpp
